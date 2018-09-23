@@ -7,7 +7,7 @@ import sqlite3
 #Log Table: Names, Timestamp
 conn = sqlite3.connect("door.db")
 
-def init():
+def db_init():
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS users(name TEXT, rin TEXT, good INTEGER DEFAULT 1);")
     c.execute("CREATE TABLE IF NOT EXISTS logs(rin TEXT, time TIMESTAMP);")
@@ -70,4 +70,7 @@ def list_user_privileges():
     c = conn.cursor()
     c.execute("SELECT * from users")
     return c.fetchall()
-init()
+
+def authenticate(rin):
+    entry = verify_user(rin)
+    return True if entry[2]== 1 else False;
