@@ -1,5 +1,5 @@
 import socket
-from sqlite_wrapper import *
+from .sqlite_wrapper import *
 import json
 
 HOST = '127.0.0.1'
@@ -58,3 +58,6 @@ def start_server():
                 data = conn.recv(1024)
                 ret = parse_json(data.decode("utf-8"))
                 conn.send(ret.encode("utf-8"))
+
+def get_server_info():
+    return HOST,PORT

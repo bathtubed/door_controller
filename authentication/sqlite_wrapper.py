@@ -5,7 +5,7 @@ import sqlite3
 #Table Structure:
 #Users Table: Names, RINs, whether we like them
 #Log Table: Names, Timestamp
-conn = sqlite3.connect("door.db")
+conn = sqlite3.connect("authentication/door.db")
 
 def db_init():
     c = conn.cursor()
@@ -16,8 +16,10 @@ def db_init():
 def verify_user(rin):
     c = conn.cursor()
     c.execute("SELECT NAME, good FROM users WHERE rin = ?", (rin,));
-    c.execute("")
-    return c.fetchone()
+    user = c.fetchone()
+    if user == None:
+        return "Error: No such user found"
+    return user[2] == 1
 
 def add_user(name,rin):
     c = conn.cursor()
@@ -72,5 +74,4 @@ def list_user_privileges():
     return c.fetchall()
 
 def authenticate(rin):
-    entry = verify_user(rin)
-    return True if entry[2]== 1 else False;
+    return verify_user(rin)
